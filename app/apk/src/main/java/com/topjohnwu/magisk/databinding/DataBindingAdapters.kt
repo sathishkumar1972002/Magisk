@@ -108,8 +108,7 @@ fun setScrollToLast(view: RecyclerView, shouldScrollToLast: Boolean) {
     }
 
     fun RecyclerView.Adapter<*>.removeListener() {
-        val observer =
-            view.getTag(R.id.recyclerScrollListener) as? RecyclerView.AdapterDataObserver ?: return
+        val observer = view.getTag(R.id.recyclerScrollListener) as? RecyclerView.AdapterDataObserver ?: return
         unregisterAdapterDataObserver(observer)
     }
 
