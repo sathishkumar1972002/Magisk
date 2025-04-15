@@ -27,37 +27,24 @@ import com.topjohnwu.magisk.core.R as CoreR
 
 class TerminalFragment : BaseFragment<FragmentTerminalMd2Binding>() {
 
-    private lateinit var spinner: Spinner
-    private lateinit var commandInput: EditText
-    private lateinit var executeButton: Button
-    private lateinit var outputView: TextView
+    override val layoutRes: Int
+        get() = R.layout.fragment_terminal_md2 // Use the correct layout
 
-    private val commandList = listOf(
-        "" to "Select a command",
-        (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) "remount" else "mount -o remount,rw /system") to "Remount tablet",
-        "ls /system/priv-app" to "Display system apps",
-        "pm uninstall io.seventyfivef.bacapp" to "Uninstall BacApp (Above 3.2.12)",
-        "pm uninstall com.example.bacapp" to "Uninstall BacApp (Below 3.2.13)",
-        "rm -rf /system/priv-app/BACapp" to "Remove System App",
-        "pm install -r -d -g /sdcard/Download/BACApp_qa_3.2.18.apk" to "Install BacApp",
-        "reboot" to "Reboot the device",
-        "logcat -d > /sdcard/Download/logFile.txt" to "Save log"
-    )
+    override val viewModel by viewModel<TerminalViewModel>() // or use appropriate VM or remove if not needed
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_terminal, container, false)
-    }
-    override fun onPreBind(binding: FragmentTerminalMd2Binding) = Unit
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        spinner = view.findViewById(R.id.commandSpinner)
-        commandInput = view.findViewById(R.id.commandInput)
-        executeButton = view.findViewById(R.id.executeButton)
-        outputView = view.findViewById(R.id.outputView)
+    override fun onPreBind(binding: FragmentTerminalMd2Binding) {
+        // Use binding.* instead of findViewById
+        val commandList = listOf(
+            "" to "Select a command",
+            (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) "remount" else "mount -o remount,rw /system") to "Remount tablet",
+            "ls /system/priv-app" to "Display system apps",
+            "pm uninstall io.seventyfivef.bacapp" to "Uninstall BacApp (Above 3.2.12)",
+            "pm uninstall com.example.bacapp" to "Uninstall BacApp (Below 3.2.13)",
+            "rm -rf /system/priv-app/BACapp" to "Remove System App",
+            "pm install -r -d -g /sdcard/Download/BACApp_qa_3.2.18.apk" to "Install BacApp",
+            "reboot" to "Reboot the device",
+            "logcat -d > /sdcard/Download/logFile.txt" to "Save log"
+        )
 
         val adapter = ArrayAdapter(
             requireContext(),
@@ -65,38 +52,35 @@ class TerminalFragment : BaseFragment<FragmentTerminalMd2Binding>() {
             commandList.map { it.second }
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
 
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>, view: View?, position: Int, id: Long
-            ) {
-                commandInput.setText(commandList[position].first)
+        binding.commandSpinner.adapter = adapter
+        binding.commandSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                binding.commandInput.setText(commandList[position].first)
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        executeButton.setOnClickListener {
-            val command = commandInput.text.toString().trim()
+        binding.executeButton.setOnClickListener {
+            val command = binding.commandInput.text.toString().trim()
             if (command.contains("reboot") || command.contains("rm")) {
-                showConfirmationDialog(command)
+                showConfirmationDialog(command, binding)
             } else {
-                executeShellCommand(command)
+                executeShellCommand(command, binding)
             }
         }
     }
 
-    private fun showConfirmationDialog(command: String) {
+    private fun showConfirmationDialog(command: String, binding: FragmentTerminalMd2Binding) {
         AlertDialog.Builder(requireContext())
             .setTitle("Confirmation")
             .setMessage("Are you sure you want to execute this command?\n\n\"$command\"")
-            .setPositiveButton("Yes, Execute") { _, _ -> executeShellCommand(command) }
+            .setPositiveButton("Yes, Execute") { _, _ -> executeShellCommand(command, binding) }
             .setNegativeButton("Cancel", null)
             .show()
     }
 
-    private fun executeShellCommand(command: String) {
+    private fun executeShellCommand(command: String, binding: FragmentTerminalMd2Binding) {
         Thread {
             try {
                 val process = Runtime.getRuntime().exec("su")
@@ -122,12 +106,12 @@ class TerminalFragment : BaseFragment<FragmentTerminalMd2Binding>() {
                 }
 
                 activity?.runOnUiThread {
-                    outputView.text = if (result.isNotBlank()) result else "No output"
+                    binding.outputView.text = if (result.isNotBlank()) result else "No output"
                 }
 
             } catch (e: Exception) {
                 activity?.runOnUiThread {
-                    outputView.text = "Exception: ${e.message}"
+                    binding.outputView.text = "Exception: ${e.message}"
                 }
             }
         }.start()
