@@ -85,6 +85,11 @@
         android:name="com.topjohnwu.magisk.ui.module.ModuleFragment"
         android:label="ModuleFragment"
         tools:layout="@layout/fragment_module_md2" />
+ <fragment
+        android:id="@+id/terminalsFragment"
+        android:name="com.topjohnwu.magisk.ui.terminal.TerminalFragment"
+        android:label="TerminalFragment"
+        tools:layout="@layout/fragment_terminal_md2" />
 
     <fragment
         android:id="@+id/settingsFragment"
