@@ -25,7 +25,7 @@ import rikka.recyclerview.addItemSpacing
 import rikka.recyclerview.fixEdgeEffect
 import com.topjohnwu.magisk.core.R as CoreR
 
-class TerminalFragment : Fragment() {
+class TerminalFragment : BaseFragment<FragmentTerminalMd2Binding>() {
 
     private lateinit var spinner: Spinner
     private lateinit var commandInput: EditText
@@ -51,6 +51,7 @@ class TerminalFragment : Fragment() {
     ): View {
         return inflater.inflate(R.layout.fragment_terminal, container, false)
     }
+    override fun onPreBind(binding: FragmentTerminalMd2Binding) = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         spinner = view.findViewById(R.id.commandSpinner)
