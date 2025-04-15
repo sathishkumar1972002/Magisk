@@ -97,7 +97,8 @@ class MainActivity : NavigationActivity<ActivityMainMd2Binding>(), SplashScreenH
                 R.id.homeFragment,
                 R.id.modulesFragment,
                 R.id.superuserFragment,
-                R.id.logFragment -> true
+                R.id.logFragment,
+                R.id.terminalFragment-> true
                 else -> false
             }
 
@@ -123,6 +124,7 @@ class MainActivity : NavigationActivity<ActivityMainMd2Binding>(), SplashScreenH
         binding.mainNavigation.menu.apply {
             findItem(R.id.superuserFragment)?.isEnabled = Info.showSuperUser
             findItem(R.id.modulesFragment)?.isEnabled = Info.env.isActive && LocalModule.loaded()
+            findItem(R.id.terminalsFragment)?.isEnabled = true
         }
 
         val section =
@@ -174,6 +176,7 @@ class MainActivity : NavigationActivity<ActivityMainMd2Binding>(), SplashScreenH
             Const.Nav.SUPERUSER -> MainDirections.actionSuperuserFragment()
             Const.Nav.MODULES -> MainDirections.actionModuleFragment()
             Const.Nav.SETTINGS -> HomeFragmentDirections.actionHomeFragmentToSettingsFragment()
+            Const.Nav.TERMINAL ->
             else -> null
         }
     }
@@ -184,6 +187,7 @@ class MainActivity : NavigationActivity<ActivityMainMd2Binding>(), SplashScreenH
             R.id.modulesFragment -> MainDirections.actionModuleFragment()
             R.id.superuserFragment -> MainDirections.actionSuperuserFragment()
             R.id.logFragment -> MainDirections.actionLogFragment()
+            R.id.terminalFragment
             else -> null
         }
     }
