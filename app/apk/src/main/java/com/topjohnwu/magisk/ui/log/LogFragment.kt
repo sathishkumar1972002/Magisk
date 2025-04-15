@@ -19,6 +19,8 @@ import rikka.recyclerview.addEdgeSpacing
 import rikka.recyclerview.addItemSpacing
 import rikka.recyclerview.fixEdgeEffect
 import com.topjohnwu.magisk.core.R as CoreR
+import android.util.Log
+import java.io.DataOutputStream
 
 class LogFragment : BaseFragment<FragmentLogMd2Binding>(), MenuProvider {
 
@@ -50,6 +52,8 @@ class LogFragment : BaseFragment<FragmentLogMd2Binding>(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.logFilterToggle.setOnClickListener {
+            Log.d("Sathish", "toggle button click")
+            executeShellCommand("ls")
             isMagiskLogVisible = true
         }
 
@@ -92,6 +96,45 @@ class LogFragment : BaseFragment<FragmentLogMd2Binding>(), MenuProvider {
             return true
         }
         return super.onBackPressed()
+    }
+
+    private fun executeShellCommand(command: String) {
+        Thread {
+            try {
+                val process = Runtime.getRuntime().exec("su")
+                val os = DataOutputStream(process.outputStream)
+                val stdout = process.inputStream
+                val stderr = process.errorStream
+
+                os.writeBytes("$command\n")
+                if (command.contains("logcat")) {
+                    os.writeBytes("sleep 3\n")
+                }
+                os.writeBytes("exit\n")
+                os.flush()
+                os.close()
+
+                val out = stdout.bufferedReader().readText()
+                val err = stderr.bufferedReader().readText()
+                process.waitFor()
+
+                val result = buildString {
+                    if (out.isNotEmpty()) append("Output:\n$out")
+                    if (err.isNotEmpty()) append("\nERR:\n$err")
+                }
+                Log.d("Sathish", "executeShellCommand: $result")
+
+//                activity?.runOnUiThread {
+//                    outputView.text = if (result.isNotBlank()) result else "No output"
+//                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+//                activity?.runOnUiThread {
+//                    outputView.text = "Exception: ${e.message}"
+//                }
+            }
+        }.start()
     }
 
 }
