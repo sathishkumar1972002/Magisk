@@ -19,7 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import com.topjohnwu.magisk.R
 import com.topjohnwu.magisk.arch.BaseFragment
 import com.topjohnwu.magisk.arch.viewModel
-import com.topjohnwu.magisk.databinding.FragmentSuperuserMd2Binding
+import com.topjohnwu.magisk.databinding.FragmentTerminalMd2Binding
 import rikka.recyclerview.addEdgeSpacing
 import rikka.recyclerview.addItemSpacing
 import rikka.recyclerview.fixEdgeEffect
@@ -30,7 +30,7 @@ class TerminalFragment : BaseFragment<FragmentTerminalMd2Binding>() {
     override val layoutRes: Int
         get() = R.layout.fragment_terminal_md2 // Use the correct layout
 
-    override val viewModel by viewModel<TerminalViewModel>() // or use appropriate VM or remove if not needed
+    override val viewModel by viewModel() // or use appropriate VM or remove if not needed
 
     override fun onPreBind(binding: FragmentTerminalMd2Binding) {
         // Use binding.* instead of findViewById
