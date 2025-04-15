@@ -1,4 +1,4 @@
-package com.topjohnwu.magisk.ui.superuser
+package com.topjohnwu.magisk.ui.terminal
 
 import android.os.Build
 import android.os.Bundle
@@ -20,7 +20,6 @@ import com.topjohnwu.magisk.R
 import com.topjohnwu.magisk.arch.BaseFragment
 import com.topjohnwu.magisk.arch.viewModel
 import com.topjohnwu.magisk.databinding.FragmentSuperuserMd2Binding
-import org.jetbrains.kotlin.serialization.js.ast.JsAstProtoBuf.Fragment
 import rikka.recyclerview.addEdgeSpacing
 import rikka.recyclerview.addItemSpacing
 import rikka.recyclerview.fixEdgeEffect
