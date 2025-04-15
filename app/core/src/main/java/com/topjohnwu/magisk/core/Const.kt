@@ -71,5 +71,6 @@ object Const {
         const val SETTINGS = "settings"
         const val MODULES = "modules"
         const val SUPERUSER = "superuser"
+        const val TERMINAL = "terminal"
     }
 }

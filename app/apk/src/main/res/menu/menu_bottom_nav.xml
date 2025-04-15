@@ -25,5 +25,11 @@
         android:icon="@drawable/ic_module_md2"
         android:title="@string/modules"
         tools:showAsAction="always" />
+<item
+        android:id="@+id/terminalsFragment"
+        android:icon="@drawable/ic_module_md2"
+        android:title="Terminal"
+        tools:showAsAction="always" />
+
 
 </menu>
