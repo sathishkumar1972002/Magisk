@@ -22,6 +22,7 @@ interface ObservableHost : Observable {
     fun notifyChange() {
         synchronized(this) {
 
+
             callbacks ?: return
         }.notifyCallbacks(this, 0, null)
     }
