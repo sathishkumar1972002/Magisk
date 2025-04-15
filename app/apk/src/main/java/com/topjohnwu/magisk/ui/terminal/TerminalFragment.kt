@@ -8,6 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import java.io.DataOutputStream
 
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+
 import com.topjohnwu.magisk.R
 import com.topjohnwu.magisk.arch.BaseFragment
 import com.topjohnwu.magisk.arch.viewModel
