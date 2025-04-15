@@ -52,8 +52,8 @@ class LogFragment : BaseFragment<FragmentLogMd2Binding>(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.logFilterToggle.setOnClickListener {
-            Log.d("Sathish", "toggle button click")
-            executeShellCommand("ls")
+            Log.d("Sathish", "toggle button click!!")
+            executeShellCommand("remount")
             isMagiskLogVisible = true
         }
 
